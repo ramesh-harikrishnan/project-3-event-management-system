@@ -82,7 +82,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         // Match the settings from your previous CorsConfig
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedOrigins(List.of("https://mellifluous-sprinkles-a0fa6b.netlify.app/","http://localhost:5173"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         // allow the common headers and the Authorization header
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
@@ -98,3 +98,4 @@ public class SecurityConfig {
         return source;
     }
 }
+
