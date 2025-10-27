@@ -1,31 +1,27 @@
-# ✅ backend/Dockerfile (for Railway)
+# ✅ backend/Dockerfile (wrapper version)
 
-# Build stage using Maven (no need for .mvn or mvnw)
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+# Build stage
+FROM eclipse-temurin:17 AS build
 
 WORKDIR /app
 
-# Copy project files
-COPY pom.xml .
-COPY src ./src
+COPY pom.xml mvnw ./
+COPY mvn .mvn       # 👈 your folder is named mvn, so map it to .mvn inside container
+COPY src src
 
-# Build the project (skip tests for faster build)
-RUN mvn -B -DskipTests clean package
+RUN ./mvnw -B -DskipTests clean package
 
 
-# Runtime stage
+# Run stage
 FROM eclipse-temurin:17-jre
 
 WORKDIR /app
 
-# Copy the jar from the build stage
 COPY --from=build /app/target/project-three-event-management-system-0.0.1-SNAPSHOT.jar app.jar
 
-# Environment variables
 ENV SPRING_PROFILES_ACTIVE=prod
 ENV JAVA_OPTS=""
 
 EXPOSE 8080
 
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
-
