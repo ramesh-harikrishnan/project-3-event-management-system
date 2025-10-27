@@ -1,23 +1,24 @@
-# ✅ backend/Dockerfile (wrapper version)
+# ✅ backend/Dockerfile (Java 21 version for Railway)
 
 # Build stage
-FROM eclipse-temurin:17 AS build
+FROM maven:3.9.9-eclipse-temurin-21 AS build
 
 WORKDIR /app
 
-COPY pom.xml mvnw ./
-COPY mvn .mvn       # 👈 your folder is named mvn, so map it to .mvn inside container
-COPY src src
+COPY pom.xml .
+RUN mvn -B dependency:go-offline
 
-RUN ./mvnw -B -DskipTests clean package
+COPY src ./src
+
+RUN mvn -B -DskipTests clean package
 
 
 # Run stage
-FROM eclipse-temurin:17-jre
+FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 
-COPY --from=build /app/target/project-three-event-management-system-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/*.jar app.jar
 
 ENV SPRING_PROFILES_ACTIVE=prod
 ENV JAVA_OPTS=""
@@ -25,3 +26,4 @@ ENV JAVA_OPTS=""
 EXPOSE 8080
 
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+
