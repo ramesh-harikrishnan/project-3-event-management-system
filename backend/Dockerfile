@@ -19,7 +19,7 @@ FROM eclipse-temurin:17-jre
 WORKDIR /app
 
 # Copy the jar from the build stage
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /app/target/project-three-event-management-system-0.0.1-SNAPSHOT.jar app.jar
 
 # Environment variables
 ENV SPRING_PROFILES_ACTIVE=prod
@@ -28,3 +28,4 @@ ENV JAVA_OPTS=""
 EXPOSE 8080
 
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+
