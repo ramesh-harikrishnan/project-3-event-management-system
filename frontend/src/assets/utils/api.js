@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 // Replace with your actual backend URL
-const API_BASE_URL = 'http://localhost:8080/api';
+// const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = "https://project-3-event-management-system-production.up.railway.app/api";
 
 export const api = axios.create({
     baseURL: API_BASE_URL,
@@ -46,4 +47,5 @@ export const del = (url, config = {}) => api.delete(url, config);
 
 
 // You can optionally keep the default export if other parts of your app use it:
+
 export default api;
